@@ -1,0 +1,38 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Virtual environments
+env/
+venv/
+ENV/
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints
+
+# VSCode settings
+.vscode/
+
+# Node modules (for frontend)
+node_modules/
+
+# Environment variable files
+.env
+.env.*
+
+# Data, logs, models
+*.db
+*.sqlite3
+*.log
+*.pkl
+*.h5
+*.csv
+
+# Docker
+*.pid
