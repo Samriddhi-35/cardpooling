@@ -39,4 +39,6 @@ class Transaction(Base):
     discount_applied = Column(Float)
     shopper_rating = Column(Float)
     txn_success = Column(Boolean)
+    request_time = Column(DateTime)  
+    response_time = Column(DateTime) 
     created_at = Column(DateTime)

@@ -95,6 +95,8 @@ def log_transaction(txn: TransactionLog):
             discount_applied=txn.discount_applied,
             shopper_rating=txn.shopper_rating,
             txn_success=txn.txn_success,
+            request_time=txn.request_time,
+            response_time=txn.response_time,
             created_at=datetime.utcnow(),
         )
         db.add(transaction)
