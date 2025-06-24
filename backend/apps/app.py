@@ -2,6 +2,11 @@ from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from backend.apps.models import Shopper, Cardholder, Transaction
 from backend.apps.db import SessionLocal
+from backend.apps.feature_store import (
+    update_cardholder_features,
+    get_cardholder_features
+)
+
 from datetime import datetime
 
 app = FastAPI()
@@ -95,16 +100,26 @@ def log_transaction(txn: TransactionLog):
             discount_applied=txn.discount_applied,
             shopper_rating=txn.shopper_rating,
             txn_success=txn.txn_success,
-            request_time=txn.request_time,
-            response_time=txn.response_time,
             created_at=datetime.utcnow(),
         )
         db.add(transaction)
         db.commit()
         db.refresh(transaction)
+
+        update_cardholder_features(
+            cardholder_id=txn.cardholder_id,
+            txn_success=txn.txn_success,
+            discount_applied=txn.discount_applied
+        )
+
         return {"status": "success", "transaction_id": transaction.id}
     except Exception as e:
         db.rollback()
         raise HTTPException(status_code=500, detail=str(e))
     finally:
         db.close()
+
+
+@app.get("/cardholder_features/{cardholder_id}")
+def cardholder_features(cardholder_id: int):
+    return get_cardholder_features(cardholder_id)
