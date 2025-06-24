@@ -20,7 +20,7 @@ def update_cardholder_features(
             "success_count",
             1
         )
-    pipe.hincrbyfloat(f"cardholder:{cardholder_id}:features", 
+    pipe.hincrbyfloat(f"cardholder:{cardholder_id}:features",
                       "total_discount", discount_applied)
     pipe.execute()
 
