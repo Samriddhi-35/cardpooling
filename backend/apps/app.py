@@ -4,7 +4,10 @@ from backend.apps.models import Shopper, Cardholder, Transaction
 from backend.apps.db import SessionLocal
 from backend.apps.feature_store import (
     update_cardholder_features,
-    get_cardholder_features
+    get_cardholder_features,
+    update_shopper_features,
+    get_shopper_features
+
 )
 
 from datetime import datetime
@@ -112,6 +115,12 @@ def log_transaction(txn: TransactionLog):
             discount_applied=txn.discount_applied
         )
 
+        update_shopper_features(
+            shopper_id=txn.shopper_id,
+            order_value=txn.order_value,
+            shopper_rating=txn.shopper_rating
+        )
+
         return {"status": "success", "transaction_id": transaction.id}
     except Exception as e:
         db.rollback()
@@ -123,3 +132,8 @@ def log_transaction(txn: TransactionLog):
 @app.get("/cardholder_features/{cardholder_id}")
 def cardholder_features(cardholder_id: int):
     return get_cardholder_features(cardholder_id)
+
+
+@app.get("/shopper_features/{shopper_id}")
+def shopper_features(shopper_id: int):
+    return get_shopper_features(shopper_id)
